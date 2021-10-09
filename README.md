@@ -3,7 +3,7 @@
 ---
 
 ## 郑重提醒
-本项目完全开源
+本项目完全开源，[Totally free on github](https://github.com/MokhaLeee/Proj-Anti-Leeches) 
 
 ## 何谓反二改
 他人盗用原作品，单纯修改成长率、角色数值等随后发布的作品称为二改作品。
