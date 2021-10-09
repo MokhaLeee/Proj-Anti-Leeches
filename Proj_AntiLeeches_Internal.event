@@ -1,0 +1,43 @@
+#include "Extensions/Hack Installation.txt"
+
+ALIGN 4
+#define NewGameCtrl 0x8009E69// 0x8009F09	
+gpItemTable:
+	POIN  0x8016318 // 0x8016570
+gpUnitTable:
+	POIN  0x80A4928 // 0x80104EC
+
+	
+	
+
+ALIGN 4
+#include "src/AntiLeechesCore.lyn.event"
+#include "src/CheckFunctions.lyn.event"
+
+ALIGN 4
+CheckFuncList:
+	#ifdef CHECK_GROWTH
+		POIN gCheckFunc_UnitGrowth
+	#endif
+	
+	#ifdef CHECK_UNIT_BASE
+		POIN gCheckFunc_UnitBase
+	#endif
+
+	#ifdef CHECK_WPN_BONUS
+		POIN gCheckFunc_WpnBonus
+	#endif
+WORD 0
+
+PUSH
+	ORG 0x000AB0 // 0x000AD8
+	BL(jumpToCheckLeeches)
+	
+	ORG 0x017490
+	jumpToHack(NewGetItemStatBonus)
+	
+	ALIGN 4
+	jumpToCheckLeeches:
+	jumpToHack(OnGameInitCheck)
+POP
+

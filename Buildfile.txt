@@ -1,0 +1,90 @@
+
+#define ListEnd 0
+/*
+ * ----------------------------------------------------------
+ *						Config
+ * ----------------------------------------------------------
+*/
+
+// FreeSpace
+// 如果打算自行定义烧录位置的话，请将下面一行注释掉
+// #define FreeSpace $EF2F20 // $B2A610
+
+	#ifdef FreeSpace
+		ORG FreeSpace
+	#endif
+
+
+// Unit Growth
+// 如果不打算检测成长率的话，注释掉下面这一行
+#define CHECK_GROWTH
+
+	// 人物最高成长率(不会检测Hp)
+	MaxGrowth:
+		BYTE 0x47 // 46H = 71D
+
+	// 将被检测成长率的角色ID，毕竟不能把所有的人，包括敌军全部都做检测
+	UnitCheckList:
+		BYTE $1 $2 $3 $4 $5 $6 $7 $8 $9 $A
+		BYTE ListEnd
+
+
+
+
+// Unit Status Base
+// 如果不打算检测角色基础数值的话，注释掉下面这一行
+#define CHECK_UNIT_BASE
+
+	// 我方角色低阶职业的最高基础能力值(检测pow/skl/spd/def/res)
+	UnitStatusBase_Low:
+		BYTE $F
+		
+	// 	将被检测基础能力值的角色ID，本列表值放低阶职业
+	UnitCheckList_BaseStatusForLowerClass:
+		BYTE $1 $3 $4 $5 $6
+		BYTE ListEnd
+	
+	// 我方角色高阶职业的最高基础能力值(Hp除外)
+	UnitStatusBase_High: 
+		BYTE $19	// 19H = 25D
+	
+	// 	将被检测基础能力值的角色ID，本列表值放高阶职业
+	UnitCheckList_BaseStatusForHigherClass:
+		BYTE $2
+		BYTE ListEnd
+
+
+
+
+// Weapon Bonus
+// 如果不打算检测武器的人物属性加成的话，注释掉下下面这一行
+// 不会检查龙石的属性加成
+#define CHECK_WPN_BONUS
+
+	// 武器的最高加成
+	MaxWpnBonus:
+		BYTE $A
+	
+	// 如果有一些武器本身设定就是很离谱的话，可以列出来以避免受到检测。
+	WpnExceptList:
+		BYTE $1
+		BYTE ListEnd
+
+
+/*
+ * ----------------------------------------------------------
+ *						Internal
+ * ----------------------------------------------------------
+*/
+
+ALIGN 4
+#include Proj_AntiLeeches_Internal.event
+
+
+/* MESSAGE OnGameInitCheck_ OnGameInitCheck
+MESSAGE CheckLeeches_ CheckLeeches
+MESSAGE gCheckFunc_UnitGrowth_ gCheckFunc_UnitGrowth
+MESSAGE gCheckFunc_UnitBase_ gCheckFunc_UnitBase
+MESSAGE gCheckFunc_WpnBonus_ gCheckFunc_WpnBonus */
+ALIGN 4
+
